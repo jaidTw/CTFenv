@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 LABEL maintainer "jaidTw"
 
 COPY sources.list /etc/apt/sources.list
@@ -10,7 +10,7 @@ RUN apt install -y  libc6-dbg libc6:i386 libc6-dbg:i386 libssl-dev libffi-dev \
                     python python-pip python3 python3-dev python3-pip ruby ruby-dev \
                     gcc clang build-essential llvm make cmake patchelf \
                     gdb gdb-multiarch strace ltrace radare2 \
-                    git tmux qemu neovim file iputils-ping bsdmainutils
+                    git tmux qemu vim file iputils-ping bsdmainutils
 
 RUN cd ~ && git clone https://github.com/pwndbg/pwndbg
 RUN cd ~/pwndbg/ && ./setup.sh
@@ -25,11 +25,9 @@ RUN pip install ropgadget capstone
 
 RUN gem install one_gadget seccomp-tools
 
-RUN mkdir -p /root/.config/nvim
-COPY configs/init.vim /root/.config/nvim.
+COPY configs/.vimrc /root/.vimrc
 COPY configs/.tmux.conf /root/.
 COPY configs/.gdbinit /root/.
-RUN echo 'alias vim="nvim"' >> /root/.bashrc
 ENV EDITOR=vim
 ENV VISUAL=vim
 ENV TERM=xterm-256color
